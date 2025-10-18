@@ -46,7 +46,7 @@ const CategoryProducts = ({ categories, slug }: Props) => {
 
   useEffect(() => {
     fetchProducts(currentSlug);
-  }, [router]);
+  }, [router, currentSlug]);
   return (
     <div className="flex flex-col items-start gap-5 py-5 md:flex-row">
       <div className="flex flex-col border md:min-w-40">

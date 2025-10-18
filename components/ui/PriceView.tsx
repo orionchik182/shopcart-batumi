@@ -8,6 +8,7 @@ interface Props {
 }
 
 const PriceView = ({ price, discount, className }: Props) => {
+  console.log(className)
   return (
     
       <div className="flex items-center gap-2">

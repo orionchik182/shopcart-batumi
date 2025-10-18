@@ -10,6 +10,7 @@ const FavoriteButton = ({
   showProduct?: boolean;
   product?: Product | null | undefined;
 }) => {
+  console.log(product)
   return (
     <>
       {!showProduct ? (

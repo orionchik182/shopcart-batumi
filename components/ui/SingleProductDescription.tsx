@@ -5,7 +5,7 @@ import { Product } from "@/sanity.types";
 import { Tabs } from "antd";
 import type { TabsProps } from "antd";
 import "@/app/product-tabs.css"; // <— ВАЖНО: подключаем стили
-import { Star, StarIcon } from "lucide-react";
+import { StarIcon } from "lucide-react";
 
 const SingleProductDescription = ({ product }: { product: Product }) => {
   console.log(product);

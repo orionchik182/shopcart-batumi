@@ -10,6 +10,7 @@ const AddToWishListButton = ({
   product: Product;
   className?: string;
 }) => {
+  console.log(product)
   return (
     <div className={cn("absolute top-2 right-2 z-10", className)}>
       <button className="p-2.5 rounded-full bg-shop_lighter_bg hover:bg-shop_dark_green hover:text-white hoverEffect">
