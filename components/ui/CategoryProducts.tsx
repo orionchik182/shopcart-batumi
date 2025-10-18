@@ -49,7 +49,7 @@ const CategoryProducts = ({ categories, slug }: Props) => {
   }, [router, currentSlug]);
   return (
     <div className="flex flex-col items-start gap-5 py-5 md:flex-row">
-      <div className="flex flex-col border md:min-w-40">
+      <div className="flex justify-center flex-wrap md:flex-col border md:min-w-40">
         {categories?.map((item) => (
           <Button
             onClick={() => handleCategoryChange(item?.slug?.current as string)}
