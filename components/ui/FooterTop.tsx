@@ -1,4 +1,4 @@
-import { Clock, MailIcon, MapPin, Phone } from "lucide-react";
+import { Clock, Mail, MailCheckIcon, MailIcon, MapPin, Phone } from "lucide-react";
 import React from "react";
 import ContactItem from "./ContactItem";
 
@@ -34,14 +34,14 @@ const data: ContactItemData[] = [
     title: "Email Us",
     subtitle: "Serg.batumi2022@gmail.com",
     icon: (
-      <MailIcon className="h-6 w-6 text-gray-600 group-hover:text-primary transition-colors" />
+      <MailCheckIcon className="h-6 w-6 text-gray-600 group-hover:text-primary transition-colors" />
     ),
   },
 ];
 
 const FooterTop = () => {
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 border-b">
+    <div className="grid grid-cols-1 place-items-center md:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-6 lg:gap-8 border-b pr-1">
       {data?.map((item, index) => (
         <ContactItem key={index} item={item} />
       ))}

@@ -16,7 +16,7 @@ const SideMenu: FC<SidebarProps> = ({ isOpen, onClose }) => {
   const sidebarRef = useOutsideClick<HTMLDivElement>(onClose);
   return (
     <div
-      className={`fixed inset-y-0 h-screen left-0 z-50 w-full bg-black/50 text-white/80 shadow-xl ${
+      className={`fixed inset-y-0 h-screen left-0 z-50 w-2/3 bg-black/50 text-white/80 shadow-xl ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       } hoverEffect`}
     >
@@ -35,6 +35,7 @@ const SideMenu: FC<SidebarProps> = ({ isOpen, onClose }) => {
             <Link
               href={item?.href}
               key={item?.title}
+              onClick={onClose}
               className={`hover:text-shop_light_green hoverEffect ${pathname === item?.href && "text-shop_light_green"}`}
             >
               {item?.title}
