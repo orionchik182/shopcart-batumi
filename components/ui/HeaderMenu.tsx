@@ -7,7 +7,7 @@ import React from "react";
 export default function HeaderMenu() {
   const pathName = usePathname();
   return (
-    <div className="hidden md:inline-flex w-1/3 items-center gap-7 text-sm capitalize font-semibold text-shop_lightColor">
+    <div className="hidden md:inline-flex w-1/3 items-center justify-center gap-7 text-sm capitalize font-semibold text-shop_lightColor">
       {headerData?.map((item) => (
         <Link
           key={item?.title}

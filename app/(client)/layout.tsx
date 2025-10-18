@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       
-          <div className="flex flex-col min-h-screen">
+          <div className="flex flex-col">
             <Header />
           <main className="flex-1">{children}</main>
           <Footer />

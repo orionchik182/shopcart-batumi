@@ -1,0 +1,57 @@
+/* product-tabs.css */
+.product-tabs {
+  /* nothing here – всё ниже через внутренние элементы */
+}
+
+/* Снимаем отступы и рисуем «серый хедер» как на скрине */
+.product-tabs .ant-tabs-nav {
+  margin: 0;
+  background: #f3f4f6;                 /* bg-gray-100 */
+  border: 1px solid #e5e7eb;           /* border-gray-200 */
+  border-bottom: none;
+  border-radius: 12px 12px 0 0;
+  padding: 0 8px;
+}
+
+/* Сами вкладки: плотнее, полужирный текст, спокойный цвет */
+.product-tabs .ant-tabs-tab {
+  margin: 0;                           /* без ступенек между табами */
+  padding: 12px 18px;
+  font-weight: 600;
+  color: #6b7280;                      /* gray-500 */
+}
+.product-tabs .ant-tabs-tab:hover .ant-tabs-tab-btn {
+  color: #111827;                      /* gray-900 */
+}
+
+.product-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #111827;                      /* активная – тёмная */
+}
+
+/* Тонкая чёрная/тёмная линия-индикатор под активной вкладкой */
+.product-tabs .ant-tabs-ink-bar {
+  height: 2px;
+  background: #111827;                 /* gray-900 */
+  border-radius: 2px;
+}
+
+/* Контент: белый «боди» с рамкой и скруглениями снизу */
+.product-tabs .ant-tabs-content-holder {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  padding: 16px;                       /* как на скрине, не тесно */
+}
+
+/* Делает высоту кликабельной зоны ровной */
+.product-tabs .ant-tabs-nav-list {
+  align-items: center;
+}
+
+
+/* Опционально — чуть меньше вертикальный размер табов на мобильном */
+@media (max-width: 640px) {
+  .product-tabs .ant-tabs-tab { padding: 10px 12px; }
+  .product-tabs .ant-tabs-content-holder { padding: 12px; }
+}
