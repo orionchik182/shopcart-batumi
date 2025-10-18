@@ -11,14 +11,14 @@ export interface ContactItemData {
 const data: ContactItemData[] = [
   {
     title: "Visit Us",
-    subtitle: "New Orlean, USA",
+    subtitle: "Georgia, Batumi",
     icon: (
       <MapPin className="h-6 w-6 text-gray-600 group-hover:text-primary transition-colors" />
     ),
   },
   {
     title: "Call Us",
-    subtitle: "+12 958 648 597",
+    subtitle: "+995 579 02 41 20",
     icon: (
       <Phone className="h-6 w-6 text-gray-600 group-hover:text-primary transition-colors" />
     ),
@@ -41,7 +41,7 @@ const data: ContactItemData[] = [
 
 const FooterTop = () => {
   return (
-    <div className="grid grid-cols-1 place-items-center md:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-6 lg:gap-8 border-b pr-1">
+    <div className="grid pl-15 md:pl-0 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-6 lg:gap-8 border-b pr-1">
       {data?.map((item, index) => (
         <ContactItem key={index} item={item} />
       ))}
