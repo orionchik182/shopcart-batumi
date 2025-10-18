@@ -8,7 +8,7 @@ import "@/app/product-tabs.css"; // <— ВАЖНО: подключаем сти
 import { StarIcon } from "lucide-react";
 
 const SingleProductDescription = ({ product }: { product: Product }) => {
-  console.log(product);
+  
   const items: TabsProps["items"] = [
     {
       key: "1",
@@ -65,11 +65,12 @@ const SingleProductDescription = ({ product }: { product: Product }) => {
 
   return (
     <Container>
-      <div className="product-tabs-wrapper w-full md:w-2/3">
+      <div className="product-tabs-wrapper w-full md:w-2/3 lg:w-1/2 hidden sm:inline-block">
         <Tabs
           items={items}
           defaultActiveKey="1"
           type="line"
+          
           tabBarGutter={24}
           animated
           className="product-tabs"

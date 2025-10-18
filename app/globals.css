@@ -20,6 +20,7 @@
   --color-shop_light_text: #686e7d;
   --color-shop_lighter_text: #ababab;
   --color-shop_deal-bg: #f1f4f8;
+  --breakpoint-sm: 500px;
 }
 
 @theme inline {
