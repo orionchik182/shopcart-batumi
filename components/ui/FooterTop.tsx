@@ -1,4 +1,4 @@
-import { Clock, Mail, MailCheckIcon, MailIcon, MapPin, Phone } from "lucide-react";
+import { Clock, MailCheckIcon, MapPin, Phone } from "lucide-react";
 import React from "react";
 import ContactItem from "./ContactItem";
 

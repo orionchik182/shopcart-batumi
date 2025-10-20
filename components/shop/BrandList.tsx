@@ -1,4 +1,4 @@
-import { Brand, BRANDS_QUERYResult } from "@/sanity.types";
+import { BRANDS_QUERYResult } from "@/sanity.types";
 import React from "react";
 import { Title } from "../ui/text";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
