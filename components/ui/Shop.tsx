@@ -82,8 +82,8 @@ const Shop = ({ categories, brands }: Props) => {
             )}
           </div>
         </div>
-        <div className="border-t-shop_dark_green/50 flex flex-col gap-5 border-t md:flex-row">
-          <div className="border-r-shop_dark_green/50 scrollbar-hide pb-5 md:sticky md:top-20 md:h-[calc(100vh-160px)] md:min-w-64 md:self-start md:overflow-y-auto md:border-r">
+        <div className="border-t-shop_dark_green/50 flex flex-col gap-5 border-t sm:flex-row">
+          <div className="border-r-shop_dark_green/50 flex sm:flex-col scrollbar-hide pb-5 md:sticky md:top-20 md:h-[calc(100vh-160px)] md:min-w-64 md:self-start md:overflow-y-auto md:border-r">
             <CategoryList
               categories={categories}
               selectedCategory={selectedCategory}
@@ -109,7 +109,7 @@ const Shop = ({ categories, brands }: Props) => {
                   </p>
                 </div>
               ) : products?.length > 0 ? (
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5">
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2.5">
                   {products?.map((product) => (
                     <ProductCard key={product?._id} product={product} />
                   ))}
