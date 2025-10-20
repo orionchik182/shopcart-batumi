@@ -65,7 +65,7 @@ const SingleProductDescription = ({ product }: { product: Product }) => {
 
   return (
     <Container>
-      <div className="product-tabs-wrapper w-full md:w-2/3 lg:w-1/2 hidden sm:inline-block">
+      <div className="product-tabs-wrapper w-full md:w-2/3 lg:w-1/2 hidden sm:inline-block mb-4">
         <Tabs
           items={items}
           defaultActiveKey="1"
@@ -76,6 +76,7 @@ const SingleProductDescription = ({ product }: { product: Product }) => {
           className="product-tabs"
         />
       </div>
+      
     </Container>
   );
 };

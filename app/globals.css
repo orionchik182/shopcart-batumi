@@ -144,3 +144,7 @@
     @apply hover:cursor-pointer;
   }
 }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
