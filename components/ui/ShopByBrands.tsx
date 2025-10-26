@@ -45,7 +45,7 @@ const ShopByBrands = async () => {
       <div className="grid grid-cols-2 gap-2.5 md:grid-cols-4 lg:grid-cols-8">
         {brands?.map((brand) => (
           <Link
-            href={`/brand/${brand?.slug?.current}`}
+            href={{pathname: "/shop", query: {brand: brand?.slug?.current}}}
             className="shadow-shop_dark_green/20 hoverEffect flex h-24 w-34 items-center justify-center overflow-hidden rounded-md bg-white hover:shadow-lg"
             key={brand?._id}
           >
