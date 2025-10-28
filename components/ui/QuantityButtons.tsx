@@ -1,9 +1,63 @@
-import React from 'react'
+import { Product } from "@/sanity.types";
+import useStore from "@/store";
+import { Minus, Plus } from "lucide-react";
+import React from "react";
+import { Button } from "./button";
+import { cn } from "@/lib/utils";
+import toast from "react-hot-toast";
 
-const QuantityButtons = () => {
-  return (
-    <div>QuantityButtons</div>
-  )
+interface Props {
+  product: Product;
+  className?: string;
 }
 
-export default QuantityButtons
+const QuantityButtons = ({ product, className }: Props) => {
+  const { addItem, removeItem, getItemCount } = useStore();
+  const itemCount = getItemCount(product?._id);
+  const isOutOfStock = product?.stock === 0;
+
+  const handleAddToCart = () => {
+    if ((product?.stock as number) > itemCount) {
+      addItem(product);
+      toast.success("Quantity Increased successfully!");
+    } else {
+      toast.error("Can not add more than available stock");
+    }
+  };
+
+  const handleRemoveProduct = () => {
+    removeItem(product?._id);
+    if (itemCount > 1) {
+      toast.success("Quantity decreased successfully!");
+    } else {
+      toast.success(`${product?.name?.substring(0, 12)} removed successfully!`);
+    }
+  };
+  return (
+    <div className={cn("flex items-center gap-1 pb-1 text-base", className)}>
+      <Button
+        onClick={handleRemoveProduct}
+        variant="outline"
+        size="icon"
+        disabled={itemCount === 0 || isOutOfStock}
+        className="hover:bg-shop_dark_green/20 hoverEffect h-6 w-6 border-[1px]"
+      >
+        <Minus />
+      </Button>
+      <span className="text-shop_darkColor w-6 text-center text-sm font-semibold">
+        {itemCount}
+      </span>
+      <Button
+        onClick={handleAddToCart}
+        variant="outline"
+        size="icon"
+        disabled={isOutOfStock}
+        className="hover:bg-shop_dark_green/20 hoverEffect h-6 w-6 border-[1px]"
+      >
+        <Plus />
+      </Button>
+    </div>
+  );
+};
+
+export default QuantityButtons;
