@@ -5,7 +5,7 @@ import ImageView from "@/components/ui/ImageView";
 import PriceView from "@/components/ui/PriceView";
 import ProductCharacteristics from "@/components/ui/ProductCharacteristics";
 import SingleProductDescription from "@/components/ui/SingleProductDescription";
-import { Product } from "@/sanity.types";
+
 import { getProductBySlug } from "@/sanity/queries";
 import { CornerDownLeft, StarIcon, Truck } from "lucide-react";
 import React from "react";
@@ -20,7 +20,7 @@ const SingleProductPage = async ({
   params: Promise<{ slug: string }>;
 }) => {
   const { slug } = await params;
-  const product: Product = await getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
 
   return (
     <>

@@ -7,26 +7,28 @@ import { cn } from "@/lib/utils";
 import toast from "react-hot-toast";
 
 interface Props {
-  product: Product;
+  product: Product | null;
   className?: string;
 }
 
 const QuantityButtons = ({ product, className }: Props) => {
   const { addItem, removeItem, getItemCount } = useStore();
-  const itemCount = getItemCount(product?._id);
+  const itemCount = getItemCount(product?._id as string);
   const isOutOfStock = product?.stock === 0;
 
   const handleAddToCart = () => {
-    if ((product?.stock as number) > itemCount) {
-      addItem(product);
-      toast.success("Quantity Increased successfully!");
-    } else {
-      toast.error("Can not add more than available stock");
+    if (product) {
+      if ((product?.stock as number) > itemCount) {
+        addItem(product);
+        toast.success("Quantity Increased successfully!");
+      } else {
+        toast.error("Can not add more than available stock");
+      }
     }
   };
 
   const handleRemoveProduct = () => {
-    removeItem(product?._id);
+    removeItem(product?._id as string);
     if (itemCount > 1) {
       toast.success("Quantity decreased successfully!");
     } else {

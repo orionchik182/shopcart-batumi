@@ -7,7 +7,7 @@ import type { TabsProps } from "antd";
 import "@/app/product-tabs.css"; // <— ВАЖНО: подключаем стили
 import { StarIcon } from "lucide-react";
 
-const SingleProductDescription = ({ product }: { product: Product }) => {
+const SingleProductDescription = ({ product }: { product: Product | null }) => {
   
   const items: TabsProps["items"] = [
     {
