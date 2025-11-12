@@ -1,9 +1,12 @@
+
+
 import type { Metadata } from "next";
 
 import "../globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { ClerkProvider } from "@clerk/nextjs";
+
 
 export const metadata: Metadata = {
   title: {
@@ -15,18 +18,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
+  
   return (
-    <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
-      
-          <div className="flex flex-col">
-            <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-          </div>
-        
-    </ClerkProvider>
+    <>{children}</>
   );
 }
