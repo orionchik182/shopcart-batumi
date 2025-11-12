@@ -4,6 +4,7 @@ import stripe from "@/lib/stripe";
 import { Address } from "@/sanity.types";
 import { urlFor } from "@/sanity/lib/image";
 import { CartItem } from "@/store";
+import { headers } from "next/headers";
 import Stripe from "stripe";
 
 export interface Metadata {
@@ -19,6 +20,21 @@ export interface GroupedCartItems {
   quantity: number;
 }
 
+async function getBaseUrl(): Promise<string> {
+  const h = await headers();
+  const origin = h.get("origin");
+  if (origin && /^https?:\/\//.test(origin)) return origin;
+
+  const proto = h.get("x-forwarded-proto");
+  const host = h.get("x-forwarded-host") || h.get("host");
+  if (proto && host) return `${proto}://${host}`;
+
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  if (process.env.NEXT_PUBLIC_BASE_URL) return process.env.NEXT_PUBLIC_BASE_URL;
+
+  return "http://localhost:3000";
+}
+
 export async function createCheckoutSession(
   items: GroupedCartItems[],
   metadata: Metadata,
@@ -29,13 +45,16 @@ export async function createCheckoutSession(
       limit: 1,
     });
     const customerId = customers?.data?.length > 0 ? customers.data[0].id : "";
+
+    const baseUrl = await getBaseUrl();
+
     const sessionPayload: Stripe.Checkout.SessionCreateParams = {
       metadata: {
         orderNumber: metadata.orderNumber,
         customerName: metadata.customerName,
         customerEmail: metadata.customerEmail,
-        clerkUserId: metadata.clerkUserId!,
-        address: JSON.stringify(metadata.address),
+        clerkUserId: metadata.clerkUserId ?? "",
+        address: JSON.stringify(metadata.address ?? null),
       },
       mode: "payment",
       allow_promotion_codes: true,
@@ -44,9 +63,9 @@ export async function createCheckoutSession(
         enabled: true,
       },
       success_url: `${
-        process.env.NEXT_PUBLIC_BASE_URL
+        baseUrl
       }/success?session_id={CHECKOUT_SESSION_ID}&orderNumber=${metadata.orderNumber}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/cart`,
+      cancel_url: `${baseUrl}/cart`,
       line_items: items?.map((item) => ({
         price_data: {
           currency: "USD",
