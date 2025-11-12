@@ -2,7 +2,7 @@
 
 import useStore from "@/store";
 // import { useUser } from "@clerk/nextjs";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect } from "react";
 import { motion } from "motion/react";
 import { Check, Home, Package, ShoppingBag } from "lucide-react";
@@ -17,11 +17,14 @@ const SuccessContent = () => {
   const session_id = searchParams.get("session_id");
   const orderNumber = searchParams.get("orderNumber");
 
+  const router = useRouter();
+
   useEffect(() => {
     if (session_id) {
       resetCart();
+      router.refresh();
     }
-  }, [session_id, resetCart]);
+  }, [session_id, resetCart, router]);
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
