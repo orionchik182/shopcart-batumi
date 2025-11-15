@@ -8,7 +8,7 @@ import type { ReactNode } from "react";
 function Inner({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const sp = useSearchParams();
-  const key = pathname + "?" + sp.toString(); // ← учитываем query, которые меняются после Stripe
+  const key = pathname + "?" + sp.toString(); 
 
   return (
     <ClerkProvider

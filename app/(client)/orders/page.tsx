@@ -1,12 +1,17 @@
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Container from "@/components/ui/Container";
+import OrdersComponent from "@/components/ui/OrdersComponent";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Table, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { getMyOrders } from "@/sanity/queries";
 import { auth } from "@clerk/nextjs/server";
 import { FileX } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
+
+export const dynamic = "force-dynamic";
 
 const OrdersPage = async () => {
   const { userId } = await auth();
@@ -18,9 +23,50 @@ const OrdersPage = async () => {
 
   return (
     <div>
-      <Container>
+      <Container className="py-10">
         {orders?.length ? (
-          <Card>orders</Card>
+          <Card className="w-full">
+            <CardHeader>
+              <CardTitle>
+                Order List
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ScrollArea>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-[100px] md:w-auto">
+                        Order Number
+                      </TableHead>
+                      <TableHead className="hidden md:table-cell">
+                        Date
+                      </TableHead>
+                      <TableHead>Customer</TableHead>
+                      <TableHead className="hidden md:table-cell">
+                        Email
+                      </TableHead>
+                      <TableHead>
+                        Total
+                      </TableHead>
+                      <TableHead>
+                        Status
+                      </TableHead>
+                      <TableHead className="hidden md:table-cell">
+                        Invoice Number
+                      </TableHead>
+                      <TableHead className="text-center">
+                        Action
+                      </TableHead>
+
+                    </TableRow>
+                  </TableHeader>
+                  <OrdersComponent orders={orders}/>
+                </Table>
+                <ScrollBar orientation="horizontal"/>
+              </ScrollArea>
+            </CardContent>
+          </Card>
         ) : (
           <div className="flex flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
             <FileX className="mb-4 h-24 w-24 text-gray-400" />

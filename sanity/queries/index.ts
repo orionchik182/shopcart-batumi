@@ -1,11 +1,16 @@
+import { SINGLE_BLOG_QUERYResult } from "@/sanity.types";
 import { sanityFetch } from "../lib/live";
 import {
+  BLOG_CATEGORIES,
   BRAND_QUERY,
   BRANDS_QUERY,
   DEAL_PRODUCTS,
+  GET_ALL_BLOG,
   LATEST_BLOG_QUERY,
   MY_ORDERS_QUERY,
+  OTHERS_BLOG_QUERY,
   PRODUCT_BY_SLUG_QUERY,
+  SINGLE_BLOG_QUERY,
 } from "./query";
 
 const getCategories = async (quantity?: number) => {
@@ -103,6 +108,57 @@ const getMyOrders = async (userId: string) => {
   }
 };
 
+const getAllBlogs = async (quantity: number) => {
+  try {
+    const { data } = await sanityFetch({
+      query: GET_ALL_BLOG,
+      params: { quantity },
+    });
+    return data ?? [];
+  } catch (error) {
+    console.error("Error fetching all blogs", error);
+    return [];
+  }
+};
+
+const getSingleBlog = async (slug: string): Promise<SINGLE_BLOG_QUERYResult> => {
+  try {
+    const {data} = await sanityFetch({
+      query: SINGLE_BLOG_QUERY,
+      params: {slug},
+    });
+    return data ?? null;
+  } catch (error) {
+    console.error("Error fetching SingleBlog", error);
+    return null;
+  }
+}
+
+const getBlogCategories = async () => {
+  try {
+    const { data } = await sanityFetch({
+      query: BLOG_CATEGORIES,
+    });
+    return data ?? [];
+  } catch (error) {
+    console.log("Error fetching BlogCategories:", error);
+    return [];
+  }
+};
+
+const getOthersBlog = async (slug: string, quantity: number) => {
+  try {
+    const { data } = await sanityFetch({
+      query: OTHERS_BLOG_QUERY,
+      params: { slug, quantity },
+    });
+    return data ?? [];
+  } catch (error) {
+    console.log("Error fetching OthersBlog:", error);
+    return [];
+  }
+};
+
 export {
   getCategories,
   getAllBrands,
@@ -111,4 +167,8 @@ export {
   getProductBySlug,
   getBrand,
   getMyOrders,
+  getAllBlogs,
+  getSingleBlog,
+  getBlogCategories,
+  getOthersBlog
 };

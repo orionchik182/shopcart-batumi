@@ -1,19 +1,25 @@
-// components/layout/Header.tsx (СЕРВЕРНЫЙ)
 import Container from "@/components/ui/Container";
 import Logo from "@/components/ui/Logo";
 import HeaderMenu from "@/components//ui/HeaderMenu";
 import SearchBar from "../ui/SearchBar";
 import FavoriteButton from "../ui/FavoriteButton";
 import CartIcon from "../ui/CartIcon";
-// import SignIn from "../ui/SignIn"; // больше не нужен
+
 import MobileMenu from "../ui/MobileMenu";
-import { auth } from "@clerk/nextjs/server"; // только auth
-import Link from "next/link";
+import { auth } from "@clerk/nextjs/server";
+
 import { getMyOrders } from "@/sanity/queries";
-import HeaderAuth from "@/components/auth/HeaderAuth"; // ← новый client-компонент
+import HeaderAuth from "@/components/auth/HeaderAuth";
 
 export default async function Header() {
-  const { userId } = await auth(); // серверно получаем userId
+  let userId: string | null = null;
+
+  try {
+    const a = await auth();
+    userId = a?.userId ?? null;
+  } catch (_) {
+    userId = null;
+  }
   const orders = userId ? await getMyOrders(userId) : [];
   const ordersCount = Array.isArray(orders) ? orders.length : 0;
 
@@ -31,8 +37,6 @@ export default async function Header() {
           <SearchBar />
           <CartIcon />
           <FavoriteButton />
-
-          {/* ВМЕСТО ClerkLoaded / SignedIn / !user — один клиентский компонент */}
           <HeaderAuth ordersCount={ordersCount} />
         </div>
       </Container>
