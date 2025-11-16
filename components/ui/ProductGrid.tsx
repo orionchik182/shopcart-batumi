@@ -12,9 +12,11 @@ import ProductCard from "./ProductCard";
 function ProductGrid() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
-  const [selectedTab, setSelectedTab] = useState(productData[0]?.title || "");
+  const [selectedTab, setSelectedTab] = useState(productData[0].value);
 
   const query = `*[_type == "product" && variant == $variant] | order(name desc){..., "categories":categories[]->title}`;
+
+
 
   useEffect(() => {
     const fetchData = async () => {
