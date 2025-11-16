@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { client } from "@/sanity/lib/client";
 import { Search, Loader2 } from "lucide-react";
 
@@ -18,19 +18,47 @@ const SEARCH_PRODUCTS = `*[
 
 export default function SearchBar() {
   const router = useRouter();
+  const pathname = usePathname();
+
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState("");
   const [hits, setHits] = useState<Hit[]>([]);
   const [loading, setLoading] = useState(false);
+
+  const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // открыть инпут и сфокусироваться
-  const toggleOpen = () => {
-    setOpen((v) => !v);
-  };
+  const toggleOpen = () => setOpen((v) => !v);
+
+  // фокус в инпут при открытии
   useEffect(() => {
     if (open) inputRef.current?.focus();
   }, [open]);
+
+  // клик-вне → закрыть
+  useEffect(() => {
+    if (!open) return;
+    const onDocClick = (e: MouseEvent) => {
+      if (!containerRef.current) return;
+      if (!containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+        setQ("");
+        setHits([]);
+      }
+    };
+    document.addEventListener("mousedown", onDocClick);
+    return () => document.removeEventListener("mousedown", onDocClick);
+  }, [open]);
+
+  // смена маршрута → закрыть
+  useEffect(() => {
+    if (open) {
+      setOpen(false);
+      setQ("");
+      setHits([]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   // дебаунс-поиск
   useEffect(() => {
@@ -55,27 +83,26 @@ export default function SearchBar() {
     return () => clearTimeout(t);
   }, [q, open]);
 
-  // переход
+  // переход к товару
   const go = (slug?: string | null) => {
-    if (!slug) return;    
-    router.push(`/product/${slug}`);
+    if (!slug) return;
+    router.push(`/product/${slug}`); 
     setOpen(false);
     setQ("");
     setHits([]);
   };
 
-  // Enter: к первому совпадению
   const onKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
-    if (e.key === "Enter" && hits[0]?.slug) {
-      go(hits[0].slug);
-    }
+    if (e.key === "Enter" && hits[0]?.slug) go(hits[0].slug);
     if (e.key === "Escape") {
       setOpen(false);
+      setQ("");
+      setHits([]);
     }
   };
 
   return (
-    <div className="relative">
+    <div className="relative" ref={containerRef}>
       <button
         aria-label="Search"
         onClick={toggleOpen}
@@ -85,7 +112,11 @@ export default function SearchBar() {
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-72 rounded-xl border border-gray-200 bg-white p-2 shadow-xl z-50">
+        <div
+          className="absolute right-0 mt-2 w-72 rounded-xl border border-gray-200 bg-white p-2 shadow-xl z-50"
+          role="dialog"
+          aria-label="Product search"
+        >
           <input
             ref={inputRef}
             value={q}
@@ -95,7 +126,6 @@ export default function SearchBar() {
             className="w-full rounded-md border border-gray-200 px-3 py-2 text-sm outline-none focus:border-black"
           />
 
-          {/* результаты */}
           <div className="mt-2 max-h-64 overflow-auto">
             {loading && (
               <div className="flex items-center gap-2 px-2 py-3 text-sm text-gray-600">
@@ -109,9 +139,9 @@ export default function SearchBar() {
             )}
 
             {!loading &&
-              hits.map((h) => (
+              hits.map((h, i) => (
                 <button
-                  key={h.slug ?? Math.random()}
+                  key={h.slug ?? `${h.name}-${i}`}
                   onClick={() => go(h.slug)}
                   className="block w-full rounded-md px-2 py-2 text-left text-sm hover:bg-gray-100"
                 >
