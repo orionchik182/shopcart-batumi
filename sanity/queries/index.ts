@@ -1,5 +1,5 @@
-import { SINGLE_BLOG_QUERYResult } from "@/sanity.types";
-import { sanityFetch } from "../lib/live";
+import { MY_ORDERS_QUERYResult, SINGLE_BLOG_QUERYResult } from "@/sanity.types";
+import { sanityFetch, sanityFetchNoStore } from "../lib/live";
 import {
   BLOG_CATEGORIES,
   BRAND_QUERY,
@@ -93,19 +93,14 @@ const getBrand = async (slug: string) => {
   }
 };
 
-const getMyOrders = async (userId: string) => {
-  try {
-    const orders = await sanityFetch({
-      query: MY_ORDERS_QUERY,
-      params: {
-        userId,
-      },
-    });
-    return orders?.data || null;
-  } catch (error) {
-    console.error("Error fetching orders by ID", error);
-    return null;
-  }
+const getMyOrders = async (userId: string): Promise<MY_ORDERS_QUERYResult> => {
+  const data = await sanityFetchNoStore<MY_ORDERS_QUERYResult>({
+    query: MY_ORDERS_QUERY,
+    params: { userId },
+    tags: [`orders:${userId}`], // для точечной инвалидации
+    revalidate: 0,
+  });
+  return data ?? [];
 };
 
 const getAllBlogs = async (quantity: number) => {

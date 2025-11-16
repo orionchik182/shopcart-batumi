@@ -45,7 +45,7 @@ const BLOG_CATEGORIES = defineQuery(
      blogcategories[]->{
     ...
     }
-  }`
+  }`,
 );
 
 const OTHERS_BLOG_QUERY = defineQuery(`*[
@@ -74,5 +74,5 @@ export {
   GET_ALL_BLOG,
   SINGLE_BLOG_QUERY,
   BLOG_CATEGORIES,
-  OTHERS_BLOG_QUERY
+  OTHERS_BLOG_QUERY,
 };

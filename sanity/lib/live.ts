@@ -7,3 +7,20 @@ import { client } from './client'
 export const { sanityFetch, SanityLive } = defineLive({
   client,
 });
+
+export async function sanityFetchNoStore<T>({
+  query,
+  params = {},
+  tags = [],
+  revalidate = 0,
+}: {
+  query: string;
+  params?: Record<string, unknown>;
+  tags?: string[];
+  revalidate?: number;
+}) {
+  return client.fetch<T>(query, params, {
+    cache: "no-store",
+    next: { tags, revalidate },
+  });
+}

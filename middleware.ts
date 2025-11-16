@@ -1,12 +1,22 @@
-import { clerkMiddleware } from "@clerk/nextjs/server";
+// middleware.ts
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-export default clerkMiddleware();
+// публичные пути (без авторизации)
+const isPublicRoute = createRouteMatcher([
+  "/api/webhook",  // Stripe webhook (app/(client)/api/webhook/route.ts => /api/webhook)
+  "/studio(.*)",   // Sanity Studio
+]);
+
+export default clerkMiddleware(async (auth, req) => {
+  // защищаем всё, что НЕ публично
+  if (!isPublicRoute(req)) {
+    await auth.protect();     
+  }
+});
 
 export const config = {
   matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
-    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-    // Always run for API routes
-    "/(api|trpc)(.*)",
+    "/((?!.+\\.[\\w]+$|_next).*)", // всё кроме статики и _next
+    "/(api|trpc)(.*)",             // и весь API/TRPC
   ],
 };

@@ -20,7 +20,7 @@ const OrdersComponent = ({ orders }: { orders: MY_ORDERS_QUERYResult }) => {
   >(null);
 
   const handleDelete = () => {
-    toast.error("Delete method applied for Admin")
+    toast.error("Delete method applied for Admin");
   };
 
   return (
@@ -28,7 +28,7 @@ const OrdersComponent = ({ orders }: { orders: MY_ORDERS_QUERYResult }) => {
       <TableBody>
         <TooltipProvider>
           {orders?.map((order) => (
-            <Tooltip key={order?.orderNumber}>
+            <Tooltip key={order?._id}>
               <TooltipTrigger asChild>
                 <TableRow
                   className="h-12 cursor-pointer hover:bg-gray-100"

@@ -1,14 +1,19 @@
 import { Metadata } from "@/actions/createCheckoutSession";
 import stripe from "@/lib/stripe";
 import { backendClient } from "@/sanity/lib/backendClient";
-import { headers } from "next/headers";
+import { revalidateTag } from "next/cache";
+
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+// (необязательно) увеличить таймаут, если нужно
+export const maxDuration = 60;
+
 export async function POST(req: NextRequest) {
   const body = await req.text();
-  const headersList = await headers();
-  const sig = headersList.get("stripe-signature");
+  const sig = req.headers.get("stripe-signature");
 
   if (!sig) {
     return NextResponse.json(
@@ -41,6 +46,14 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  function metaStr(
+    m: Stripe.Metadata | null | undefined,
+    key: string,
+  ): string | undefined {
+    const v = m?.[key];
+    return typeof v === "string" && v.length ? v : undefined;
+  }
+
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
     const invoice = session.invoice
@@ -59,6 +72,10 @@ export async function POST(req: NextRequest) {
           status: 400,
         },
       );
+    }
+    const clerkUserId = metaStr(session.metadata, "clerkUserId");
+    if (clerkUserId) {
+      revalidateTag(`orders:${clerkUserId}`);
     }
   }
   return NextResponse.json({ received: true });
