@@ -113,7 +113,7 @@ export default function SearchBar() {
 
       {open && (
         <div
-          className="absolute right-0 mt-2 w-72 rounded-xl border border-gray-200 bg-white p-2 shadow-xl z-50"
+          className="absolute -left-35 mt-2 w-72 rounded-xl border border-gray-200 bg-white p-2 shadow-xl z-50"
           role="dialog"
           aria-label="Product search"
         >

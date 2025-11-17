@@ -13,6 +13,7 @@ import {
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
 import PriceFormatter from "./PriceFormatter";
+import { ScrollArea, ScrollBar } from "./scroll-area";
 
 interface OrderDetailDialogProps {
   order: MY_ORDERS_QUERYResult[number] | null;
@@ -28,9 +29,11 @@ const OrderDetailDialog = ({
   if (!order) return null;
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-h-[90vh] !max-w-4xl overflow-y-scroll">
+      <DialogContent className="flex max-h-[90vh] flex-col">
         <DialogHeader>
-          <DialogTitle>Order Details - {order?.orderNumber}</DialogTitle>
+          <DialogTitle className="mr-5">
+            Order Details - {order?.orderNumber}
+          </DialogTitle>
         </DialogHeader>
         <div className="mt-4">
           <p>
@@ -62,40 +65,48 @@ const OrderDetailDialog = ({
             </Button>
           )}
         </div>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Product</TableHead>
-              <TableHead>Quantity</TableHead>
-              <TableHead>Price</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {order.products?.map((product, index) => (
-              <TableRow key={index}>
-                <TableCell className="flex items-center gap-2">
-                  {product?.product?.images && (
-                    <Image
-                      src={urlFor(product?.product?.images[0]).url()}
-                      alt="productImage"
-                      width={50}
-                      height={50}
-                      className="rounded-sm border"
-                    />
-                  )}
-                  {product?.product && product?.product?.name}
-                </TableCell>
-                <TableCell>{product?.quantity}</TableCell>
-                <TableCell>
-                  <PriceFormatter
-                    amount={product?.product?.price}
-                    className="font-medium text-black"
-                  />
-                </TableCell>
+        <ScrollArea className="w-full">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Product</TableHead>
+                <TableHead></TableHead>
+                <TableHead>Quantity</TableHead>
+                <TableHead>Price</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+
+            <TableBody>
+              {order.products?.map((product, index) => (
+                <TableRow key={index}>
+                  <TableCell>
+                    {product?.product?.images && (
+                      <Image
+                        src={urlFor(product?.product?.images[0]).url()}
+                        alt="productImage"
+                        width={50}
+                        height={50}
+                        className="rounded-sm border"
+                      />
+                    )}
+                  </TableCell>
+                  <TableCell className="pr-4">
+                    {product?.product && product?.product?.name}
+                  </TableCell>
+                  <TableCell>{product?.quantity}</TableCell>
+                  <TableCell>
+                    <PriceFormatter
+                      amount={product?.product?.price}
+                      className="font-medium text-black"
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
+
         <div className="mt-4 flex items-center justify-end text-right">
           <div className="flex w-44 flex-col gap-1">
             {order?.amountDiscount !== 0 && (
